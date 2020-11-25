@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Engine/Engine.h"
+#include "Engine/Graphics/VertexArray.h"
+#include "Engine/Graphics/VertexIndexArray.h"
 
 int main(int argc, char** argv)
 {
@@ -49,29 +51,37 @@ int main(int argc, char** argv)
 	program.Link();
 	program.Use();
 
-	//create vertex buffers
-	GLuint vbo; //vertex buffer object
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	nc::VertexIndexArray vertexArray;
+	vertexArray.Create("vertex");
+	vertexArray.CreateBuffer(sizeof(vertices), sizeof(vertices) / (sizeof(float) * 5), vertices);
+	vertexArray.SetAttribute(0, 3, 5 * sizeof(float), 0);
+	vertexArray.SetAttribute(1, 2, 5 * sizeof(float), 3 * sizeof(float));
 
-	//set position pipeline (vertex attribute)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
-	glEnableVertexAttribArray(0);
 
-	////set color pipeline (vertex attribute)
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	////create vertex buffers
+	//GLuint vbo; //vertex buffer object
+	//glGenBuffers(1, &vbo);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	////set position pipeline (vertex attribute)
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+	//glEnableVertexAttribArray(0);
+
+	//////set color pipeline (vertex attribute)
+	////glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	////glEnableVertexAttribArray(1);
+
+	////set UV pipeline (vertex attribute)
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(1);
 
-	//set UV pipeline (vertex attribute)
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
 	//create index buffers
-	GLuint ibo;
+	vertexArray.CreateIndexBuffer(GL_UNSIGNED_SHORT, sizeof(indices) / sizeof(GLushort), indices);
+	/*GLuint ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
 
 	//uniform
 	glm::mat4 model = glm::mat4(1.0f);
@@ -144,9 +154,11 @@ int main(int argc, char** argv)
 		//glUniformMatrix2fv(uniform, 1, GL_FALSE, glm::value_ptr(transform));
 		
 		engine.GetSystem<nc::Renderer>()->BeginFrame();
+
+		vertexArray.Draw();
 		
-		GLsizei numElements = sizeof(indices) / sizeof(GLushort);
-		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_SHORT, 0);
+		/*GLsizei numElements = sizeof(indices) / sizeof(GLushort);
+		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_SHORT, 0);*/
 
 		engine.GetSystem<nc::Renderer>()->EndFrame();
 	}
