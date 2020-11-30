@@ -8,55 +8,116 @@ int main(int argc, char** argv)
 	nc::Engine engine;
 	engine.Startup();
 
-	static float vertices[] = {
-		// front
-		-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-		-1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-		// back
-		-1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		 1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
-		-1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+	//static float vertices[] = {
+	//	// front
+	//	-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
+	//	 1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+	//	 1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
+	//	-1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+	//	// back
+	//	-1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+	//	 1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
+	//	 1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+	//	-1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+	//};
+
+	static float vertices[] =
+	{
+		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+
+
+
+		-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+
+
+
+		-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f,
+		-1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f,
+		-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f,
+		-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f,
+		-1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f,
+		-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f,
+
+
+
+		 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f,
+		 1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f,
+		 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,
+		 1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,
+		 1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,
+		 1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f,
+
+
+
+		-1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f,
+		 1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f,
+		 1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f,
+		 1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f,
+		-1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f,
+		-1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f,
+
+
+
+		-1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		 1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		 1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		 1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		-1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		-1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f
 	};
 
 	//unsigned short = 16bits
-	static GLushort indices[] =
-	{
-		// front
-		0, 1, 2,
-		2, 3, 0,
-		// right
-		1, 5, 6,
-		6, 2, 1,
-		// back
-		7, 6, 5,
-		5, 4, 7,
-		// left
-		4, 0, 3,
-		3, 7, 4,
-		// bottom
-		4, 5, 1,
-		1, 0, 4,
-		// top
-		3, 2, 6,
-		6, 7, 3
-	};
+	//static GLushort indices[] =
+	//{
+	//	// front
+	//	0, 1, 2,
+	//	2, 3, 0,
+	//	// right
+	//	1, 5, 6,
+	//	6, 2, 1,
+	//	// back
+	//	7, 6, 5,
+	//	5, 4, 7,
+	//	// left
+	//	4, 0, 3,
+	//	3, 7, 4,
+	//	// bottom
+	//	4, 5, 1,
+	//	1, 0, 4,
+	//	// top
+	//	3, 2, 6,
+	//	6, 7, 3
+	//};
 
 
 	nc::Program program;
-	program.CreateShaderFromFile("Shaders\\basic.vert", GL_VERTEX_SHADER);
-	program.CreateShaderFromFile("Shaders\\basic.frag", GL_FRAGMENT_SHADER);
+	program.CreateShaderFromFile("Shaders\\gouraud.vert", GL_VERTEX_SHADER);
+	program.CreateShaderFromFile("Shaders\\gouraud.frag", GL_FRAGMENT_SHADER);
 	program.Link();
 	program.Use();
 
-	nc::VertexIndexArray vertexArray;
-	vertexArray.Create("vertex");
-	vertexArray.CreateBuffer(sizeof(vertices), sizeof(vertices) / (sizeof(float) * 5), vertices);
-	vertexArray.SetAttribute(0, 3, 5 * sizeof(float), 0);
-	vertexArray.SetAttribute(1, 2, 5 * sizeof(float), 3 * sizeof(float));
+	/*nc::VertexIndexArray vertexIndexArray;
+	vertexIndexArray.Create("vertex");
+	vertexIndexArray.CreateBuffer(sizeof(vertices), sizeof(vertices) / (sizeof(float) * 5), vertices);
+	vertexIndexArray.SetAttribute(0, 3, 5 * sizeof(float), 0);
+	vertexIndexArray.SetAttribute(1, 2, 5 * sizeof(float), 3 * sizeof(float));
+	vertexIndexArray.CreateIndexBuffer(GL_UNSIGNED_SHORT, sizeof(indices) / sizeof(GLushort), indices);*/
 
+	nc::VertexArray vertexArray;
+	vertexArray.Create("vertex");
+	vertexArray.CreateBuffer(sizeof(vertices), sizeof(vertices) / (sizeof(float) * 6), vertices);
+	vertexArray.SetAttribute(0, 3, 6 * sizeof(float), 0);
+	vertexArray.SetAttribute(1, 3, 6 * sizeof(float), 3 * sizeof(float));
 
 	////create vertex buffers
 	//GLuint vbo; //vertex buffer object
@@ -77,7 +138,6 @@ int main(int argc, char** argv)
 	//glEnableVertexAttribArray(1);
 
 	//create index buffers
-	vertexArray.CreateIndexBuffer(GL_UNSIGNED_SHORT, sizeof(indices) / sizeof(GLushort), indices);
 	/*GLuint ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
@@ -87,7 +147,6 @@ int main(int argc, char** argv)
 	glm::mat4 model = glm::mat4(1.0f);
 	//How to get it with the OpenGL code
 	//program.SetUniform("transform", model);
-
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800/600.0f, 0.01f, 1000.0f);
 
@@ -101,6 +160,11 @@ int main(int argc, char** argv)
 	nc::Texture texture;
 	texture.CreateTexture("Textures\\llama.jpg");
 
+	program.SetUniform("material.ambient", glm::vec3{1, 1, 1});
+	program.SetUniform("material.diffuse", glm::vec3{1, 1, 1});
+
+	program.SetUniform("light.ambient", glm::vec3{ 0.1f, 0.7f, 0.9f });
+	program.SetUniform("light.diffuse", glm::vec3{ 0, 0.7f, 1 });
 
 	bool quit = false;
 	while (!quit)
