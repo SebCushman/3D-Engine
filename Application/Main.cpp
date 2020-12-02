@@ -101,8 +101,8 @@ int main(int argc, char** argv)
 
 
 	nc::Program program;
-	program.CreateShaderFromFile("Shaders\\gouraud.vert", GL_VERTEX_SHADER);
-	program.CreateShaderFromFile("Shaders\\gouraud.frag", GL_FRAGMENT_SHADER);
+	program.CreateShaderFromFile("Shaders\\phong.vert", GL_VERTEX_SHADER);
+	program.CreateShaderFromFile("Shaders\\phong.frag", GL_FRAGMENT_SHADER);
 	program.Link();
 	program.Use();
 
@@ -161,10 +161,13 @@ int main(int argc, char** argv)
 
 	program.SetUniform("material.ambient", glm::vec3{1, 1, 1});
 	program.SetUniform("material.diffuse", glm::vec3{1, 1, 1});
+	program.SetUniform("material.specular", glm::vec3{1, 1, 1});
+	program.SetUniform("material.shininess", 32.0f);
 
-	program.SetUniform("light.ambient", glm::vec3{ 0.1f, 0.7f, 0.9f });
+	program.SetUniform("light.ambient", glm::vec3{ 0.05f, 0.35f, 0.45f });
 	program.SetUniform("light.diffuse", glm::vec3{ 0, 0.7f, 1 });
-	glm::vec4 light{5, 5, 5, 1};
+	program.SetUniform("light.specular", glm::vec3{ 1, 1, 1 });
+	glm::vec4 light{5, 2, 5, 1};
 
 	bool quit = false;
 	while (!quit)
