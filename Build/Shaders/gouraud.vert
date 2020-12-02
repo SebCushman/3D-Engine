@@ -20,12 +20,22 @@ struct Light{
 
 uniform Light light;
 
-uniform mat4 transform;
+uniform mat4 mvp;
+uniform mat4 model_view;
 
 void main()
 {
+	//ambient
 	vec3 ambient = material.ambient * light.ambient;
 
-	fs_color = ambient;
-	gl_Position = transform * vec4(vs_position, 1.0);
+	//diffuse
+	vec3 normal = normalize(mat3(model_view) * vs_normal);
+	vec4 position = model_view * vec4(vs_position, 1);
+	vec3 direction_to_light = normalize(vec3(light.position - position));
+
+	float lDotN = max(dot(direction_to_light, normal), 0);//intensity
+	vec3 diffuse = material.diffuse * light.diffuse * lDotN;
+
+	fs_color = ambient + diffuse;
+	gl_Position = mvp * vec4(vs_position, 1.0);
 }

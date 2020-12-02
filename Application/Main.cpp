@@ -113,49 +113,48 @@ int main(int argc, char** argv)
 	vertexIndexArray.SetAttribute(1, 2, 5 * sizeof(float), 3 * sizeof(float));
 	vertexIndexArray.CreateIndexBuffer(GL_UNSIGNED_SHORT, sizeof(indices) / sizeof(GLushort), indices);*/
 
-	nc::VertexArray vertexArray;
+	/*nc::VertexArray vertexArray;
 	vertexArray.Create("vertex");
 	vertexArray.CreateBuffer(sizeof(vertices), sizeof(vertices) / (sizeof(float) * 6), vertices);
 	vertexArray.SetAttribute(0, 3, 6 * sizeof(float), 0);
-	vertexArray.SetAttribute(1, 3, 6 * sizeof(float), 3 * sizeof(float));
+	vertexArray.SetAttribute(1, 3, 6 * sizeof(float), 3 * sizeof(float));*/
 
-	////create vertex buffers
-	//GLuint vbo; //vertex buffer object
-	//glGenBuffers(1, &vbo);
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	nc::VertexArray vertexArray;
+	vertexArray.Create("vertex");
 
-	////set position pipeline (vertex attribute)
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
-	//glEnableVertexAttribArray(0);
+	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec2> texcoords;
+	nc::Model::Load("models/ogre.obj", positions, normals, texcoords);
 
-	//////set color pipeline (vertex attribute)
-	////glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	////glEnableVertexAttribArray(1);
+	if (!positions.empty())
+	{
+		vertexArray.CreateBuffer(positions.size() * sizeof(glm::vec3), static_cast<GLsizei>(positions.size()), positions.data());
+		vertexArray.SetAttribute(0, 3, 0, 0);
+	}
 
-	////set UV pipeline (vertex attribute)
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
+	if (!normals.empty())
+	{
+		// complete code
+		vertexArray.CreateBuffer(normals.size() * sizeof(glm::vec3), static_cast<GLsizei>(normals.size()), normals.data());
+		vertexArray.SetAttribute(1, 3, 0, 0);
+	}
 
-	//create index buffers
-	/*GLuint ibo;
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
+	if (!texcoords.empty())
+	{
+		// complete code
+		vertexArray.CreateBuffer(texcoords.size() * sizeof(glm::vec2), static_cast<GLsizei>(texcoords.size()), texcoords.data());
+		vertexArray.SetAttribute(2, 2, 0, 0);
+	}
+
 
 	//uniform
 	glm::mat4 model = glm::mat4(1.0f);
-	//How to get it with the OpenGL code
-	//program.SetUniform("transform", model);
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800/600.0f, 0.01f, 1000.0f);
 
 	glm::vec3 eye{0, 0, 5};
 	glm::mat4 view = glm::lookAt(eye, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-
-	//without OpenGL code
-	/*GLuint uniform = glGetUniformLocation(program.GetProgramID(), "transform");
-	glUniformMatrix2fv(uniform, 1, GL_FALSE, glm::value_ptr(transform));*/
 	
 	nc::Texture texture;
 	texture.CreateTexture("Textures\\llama.jpg");
@@ -165,6 +164,7 @@ int main(int argc, char** argv)
 
 	program.SetUniform("light.ambient", glm::vec3{ 0.1f, 0.7f, 0.9f });
 	program.SetUniform("light.diffuse", glm::vec3{ 0, 0.7f, 1 });
+	glm::vec4 light{5, 5, 5, 1};
 
 	bool quit = false;
 	while (!quit)
@@ -212,11 +212,14 @@ int main(int argc, char** argv)
 
 		glm::mat4 mvp = projection * view * model;
 		//How to get it with the OpenGL code
-		program.SetUniform("transform", mvp);
-		
-		//without OpenGL code
-		//glUniformMatrix2fv(uniform, 1, GL_FALSE, glm::value_ptr(transform));
-		
+		program.SetUniform("mvp", mvp);
+
+		glm::mat4 model_view = view * model;
+		program.SetUniform("model_view", model_view);
+
+		glm::vec4 position = view * light;
+		program.SetUniform("light.position", position);
+
 		engine.GetSystem<nc::Renderer>()->BeginFrame();
 
 		vertexArray.Draw();
