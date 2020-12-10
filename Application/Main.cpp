@@ -2,11 +2,15 @@
 #include "Engine/Engine.h"
 #include "Engine/Graphics/VertexArray.h"
 #include "Engine/Graphics/VertexIndexArray.h"
+#include "Engine/Input/InputSystem.h"
 
 int main(int argc, char** argv)
 {
 	nc::Engine engine;
 	engine.Startup();
+
+	nc::Scene scene(&engine);
+
 
 	//static float vertices[] = {
 	//	// front
@@ -21,7 +25,7 @@ int main(int argc, char** argv)
 	//	-1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
 	//};
 
-	static float vertices[] =
+	/*static float vertices[] =
 	{
 		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
@@ -74,7 +78,7 @@ int main(int argc, char** argv)
 		 1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
 		-1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
 		-1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f
-	};
+	};*/
 
 	//unsigned short = 16bits
 	//static GLushort indices[] =
@@ -119,55 +123,73 @@ int main(int argc, char** argv)
 	vertexArray.SetAttribute(0, 3, 6 * sizeof(float), 0);
 	vertexArray.SetAttribute(1, 3, 6 * sizeof(float), 3 * sizeof(float));*/
 
-	nc::VertexArray vertexArray;
-	vertexArray.Create("vertex");
+	nc::VertexArray vertexArray = nc::Model::Load("models/ogre.obj");
+	/*vertexArray.Create("vertex");
 
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
-	nc::Model::Load("models/ogre.obj", positions, normals, texcoords);
+	nc::Model::Load("models/ogre.obj", positions, normals, texcoords);*/
 
-	if (!positions.empty())
-	{
-		vertexArray.CreateBuffer(positions.size() * sizeof(glm::vec3), static_cast<GLsizei>(positions.size()), positions.data());
-		vertexArray.SetAttribute(0, 3, 0, 0);
-	}
+	//if (!positions.empty())
+	//{
+	//	vertexArray.CreateBuffer(positions.size() * sizeof(glm::vec3), static_cast<GLsizei>(positions.size()), positions.data());
+	//	vertexArray.SetAttribute(0, 3, 0, 0);
+	//}
 
-	if (!normals.empty())
-	{
-		// complete code
-		vertexArray.CreateBuffer(normals.size() * sizeof(glm::vec3), static_cast<GLsizei>(normals.size()), normals.data());
-		vertexArray.SetAttribute(1, 3, 0, 0);
-	}
+	//if (!normals.empty())
+	//{
+	//	// complete code
+	//	vertexArray.CreateBuffer(normals.size() * sizeof(glm::vec3), static_cast<GLsizei>(normals.size()), normals.data());
+	//	vertexArray.SetAttribute(1, 3, 0, 0);
+	//}
 
-	if (!texcoords.empty())
-	{
-		// complete code
-		vertexArray.CreateBuffer(texcoords.size() * sizeof(glm::vec2), static_cast<GLsizei>(texcoords.size()), texcoords.data());
-		vertexArray.SetAttribute(2, 2, 0, 0);
-	}
+	//if (!texcoords.empty())
+	//{
+	//	// complete code
+	//	vertexArray.CreateBuffer(texcoords.size() * sizeof(glm::vec2), static_cast<GLsizei>(texcoords.size()), texcoords.data());
+	//	vertexArray.SetAttribute(2, 2, 0, 0);
+	//}
 
 
 	//uniform
-	glm::mat4 model = glm::mat4(1.0f);
+	//glm::mat4 model = glm::mat4(1.0f);
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800/600.0f, 0.01f, 1000.0f);
+	////camera
+	glm::vec3 eye{ 0, 0, 5 };
 
-	glm::vec3 eye{0, 0, 5};
-	glm::mat4 view = glm::lookAt(eye, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	
+	nc::Camera camera{ "camera" };
+	scene.Add(&camera);
+	camera.SetProjection(45.0f, 800.0f / 600.0f, 0.01f, 1000.0f);
+	camera.SetLookAt(eye, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+	//glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800/600.0f, 0.01f, 1000.0f);
+	//glm::mat4 view = glm::lookAt(eye, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
 	nc::Texture texture;
-	texture.CreateTexture("Textures\\llama.jpg");
+	texture.CreateTexture("Textures\\ogre_diffuse_flip.bmp");
 
-	program.SetUniform("material.ambient", glm::vec3{1, 1, 1});
+	nc::Material material{ glm::vec3{1}, glm::vec3{1}, glm::vec3{1}, 32.0f };
+	material.AddTexture(texture);
+	material.SetProgram(program);
+
+	nc::Model model{ "model", nc::Transform{}, vertexArray, program, material };
+	scene.Add(&model);
+
+	/*program.SetUniform("material.ambient", glm::vec3{1, 1, 1});
 	program.SetUniform("material.diffuse", glm::vec3{1, 1, 1});
 	program.SetUniform("material.specular", glm::vec3{1, 1, 1});
-	program.SetUniform("material.shininess", 32.0f);
+	program.SetUniform("material.shininess", 32.0f);*/
 
-	program.SetUniform("light.ambient", glm::vec3{ 0.05f, 0.35f, 0.45f });
-	program.SetUniform("light.diffuse", glm::vec3{ 0, 0.7f, 1 });
-	program.SetUniform("light.specular", glm::vec3{ 1, 1, 1 });
-	glm::vec4 light{5, 2, 5, 1};
+	nc::Light light{ "light", nc::Transform{glm::vec3{5, 2, 5}}, glm::vec3{0.1f}, glm::vec3{1}, glm::vec3{1} };
+	scene.Add(&light);
+
+	/*program.SetUniform("light.ambient", glm::vec3{ 0.1f, 0.1f, 0.1f });
+	program.SetUniform("light.diffuse", glm::vec3{ 1, 1, 1 });
+	program.SetUniform("light.specular", glm::vec3{ 1, 1, 1 });*/
+	
+	//glm::vec4 light{5, 2, 5, 1};
+
 
 	bool quit = false;
 	while (!quit)
@@ -190,6 +212,8 @@ int main(int argc, char** argv)
 		SDL_PumpEvents();
 		engine.Update();
 
+		scene.Update(engine.GetTimer().DeltaTime());
+
 		float angle = 0;
 		if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_E) == nc::InputSystem::eButtonState::HELD) {
 			angle = 2.0f;
@@ -197,35 +221,44 @@ int main(int argc, char** argv)
 		if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_Q) == nc::InputSystem::eButtonState::HELD) {
 			angle = -2.0f;
 		}
-		model = glm::rotate(model, angle * engine.GetTimer().DeltaTime(), glm::vec3(0, 1, 0));
+		//model = glm::rotate(model, angle * engine.GetTimer().DeltaTime(), glm::vec3(0, 1, 0));
+		model.transform().rotation.y += angle * engine.GetTimer().DeltaTime();
 
-		if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_A) == nc::InputSystem::eButtonState::HELD) {
-			eye.x -= 4 * engine.GetTimer().DeltaTime();
-		}
-		if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_D) == nc::InputSystem::eButtonState::HELD) {
-			eye.x += 4 * engine.GetTimer().DeltaTime();
-		}
-		if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_W) == nc::InputSystem::eButtonState::HELD) {
-			eye.z -= 4 * engine.GetTimer().DeltaTime();
-		}
-		if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_S) == nc::InputSystem::eButtonState::HELD) {
-			eye.z += 4 * engine.GetTimer().DeltaTime();
-		}
-		view = glm::lookAt(eye, eye + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
+		//if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_A) == nc::InputSystem::eButtonState::HELD) {
+		//	camera.transform().translation.x -= 4 * engine.GetTimer().DeltaTime();
+		//}
+		//if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_D) == nc::InputSystem::eButtonState::HELD) {
+		//	//eye.x += 4 * engine.GetTimer().DeltaTime();
+		//	camera.transform().translation.x += 4 * engine.GetTimer().DeltaTime();
+		//}
+		//if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_W) == nc::InputSystem::eButtonState::HELD) {
+		//	camera.transform().translation.z -= 4 * engine.GetTimer().DeltaTime();
+		//}
+		//if (engine.GetSystem<nc::InputSystem>()->GetButtonState(SDL_SCANCODE_S) == nc::InputSystem::eButtonState::HELD) {
+		//	//eye.z += 4 * engine.GetTimer().DeltaTime();
+		//	camera.transform().translation.z += 4 * engine.GetTimer().DeltaTime();
+		//}
+		//view = glm::lookAt(eye, eye + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 
-		glm::mat4 mvp = projection * view * model;
-		//How to get it with the OpenGL code
-		program.SetUniform("mvp", mvp);
+		//glm::mat4 mvp = camera.projection() * camera.view() * model;
+		////How to get it with the OpenGL code
+		//program.SetUniform("mvp", mvp);
 
-		glm::mat4 model_view = view * model;
-		program.SetUniform("model_view", model_view);
+		//glm::mat4 model_view = camera.view() * model;
+		//program.SetUniform("model_view", model_view);
 
-		glm::vec4 position = view * light;
-		program.SetUniform("light.position", position);
+		std::vector<nc::Light*> lights = scene.Get<nc::Light>();
+		for (auto light : lights) {
+			light->SetProgram(program);
+		}
+
+		/*glm::vec4 position = camera.view() * light;
+		program.SetUniform("light.position", position);*/
 
 		engine.GetSystem<nc::Renderer>()->BeginFrame();
 
-		vertexArray.Draw();
+		//vertexArray.Draw();
+		scene.Draw();
 		
 		/*GLsizei numElements = sizeof(indices) / sizeof(GLushort);
 		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_SHORT, 0);*/

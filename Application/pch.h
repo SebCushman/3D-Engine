@@ -4,6 +4,9 @@
 #include "Engine/Core/Assert.h"
 #include "Engine/Math/Math.h"
 
+//broke stuff, meant to replace ^
+//#include "Engine/Engine.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <glad/glad.h>

@@ -37,6 +37,9 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{70393073-a91e-4c7b-881a-4fcf5b0aac0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Objects">
+      <UniqueIdentifier>{d9630732-a9f4-4ebd-b1ac-6ef00a37f9dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -84,8 +87,26 @@
     <ClCompile Include="Engine\Graphics\VertexIndexArray.cpp">
       <Filter>Source Files\Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\Model.cpp">
+    <ClCompile Include="Engine\Math\Transform.cpp">
+      <Filter>Source Files\Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Material.cpp">
       <Filter>Source Files\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Scene.cpp">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Object.cpp">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Light.cpp">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Camera.cpp">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Objects\Model.cpp">
+      <Filter>Source Files\Engine\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,8 +164,26 @@
     <ClInclude Include="Engine\Graphics\VertexIndexArray.h">
       <Filter>Source Files\Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\Model.h">
+    <ClInclude Include="Engine\Math\Transform.h">
+      <Filter>Source Files\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Material.h">
       <Filter>Source Files\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Object.h">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Scene.h">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Camera.h">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Light.h">
+      <Filter>Source Files\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Objects\Model.h">
+      <Filter>Source Files\Engine\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
